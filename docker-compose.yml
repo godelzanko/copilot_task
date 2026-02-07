@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: url-shortener-db
+    environment:
+      POSTGRES_DB: urlshortener
+      POSTGRES_USER: urlshortener
+      POSTGRES_PASSWORD: urlshortener_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U urlshortener -d urlshortener"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - url-shortener-network
+
+  liquibase:
+    image: liquibase/liquibase:4.25-alpine
+    container_name: url-shortener-liquibase
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./src/main/resources/db/changelog:/liquibase/changelog
+    command:
+      - --changelog-file=changelog/db.changelog-master.yaml
+      - --driver=org.postgresql.Driver
+      - --url=jdbc:postgresql://postgres:5432/urlshortener
+      - --username=urlshortener
+      - --password=urlshortener_pass
+      - update
+    networks:
+      - url-shortener-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: url-shortener-app
+    depends_on:
+      liquibase:
+        condition: service_completed_successfully
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/urlshortener
+      SPRING_DATASOURCE_USERNAME: urlshortener
+      SPRING_DATASOURCE_PASSWORD: urlshortener_pass
+      SERVER_PORT: 8080
+      SPRING_LIQUIBASE_ENABLED: false
+    ports:
+      - "3000:8080"
+    networks:
+      - url-shortener-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  url-shortener-network:
+    driver: bridge
