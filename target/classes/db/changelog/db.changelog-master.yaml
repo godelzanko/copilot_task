@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-urls-table
+      author: slavaz
+      changes:
+        - createTable:
+            tableName: urls
+            columns:
+              - column:
+                  name: short_code
+                  type: VARCHAR(10)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: original_url
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 002-create-normalized-url-index
+      author: slavaz
+      changes:
+        - sql:
+            sql: CREATE UNIQUE INDEX idx_original_url_normalized ON urls(LOWER(TRIM(original_url)))
+        - rollback:
+            sql: DROP INDEX IF EXISTS idx_original_url_normalized
+
+  - changeSet:
+      id: 003-add-table-comments
+      author: slavaz
+      changes:
+        - sql:
+            sql: |
+              COMMENT ON TABLE urls IS 'Stores URL mappings from short codes to original URLs';
+              COMMENT ON COLUMN urls.short_code IS 'Base62-encoded Snowflake ID, primary key for fast lookups';
+              COMMENT ON COLUMN urls.original_url IS 'Original destination URL';
+              COMMENT ON COLUMN urls.created_at IS 'Timestamp when the URL mapping was created';
