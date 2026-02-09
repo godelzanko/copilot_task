@@ -48,8 +48,8 @@ development_status:
   epic-1-retrospective: optional
   
   epic-2: in-progress
-  2-1-implement-snowflake-id-structure: ready
-  2-2-implement-thread-safe-sequence-counter: ready
+  2-1-implement-snowflake-id-structure: done
+  2-2-implement-thread-safe-sequence-counter: done
   2-3-implement-base62-encoding: ready
   2-4-create-snowflake-generator-component: ready
   2-5-implement-database-idempotency: blocked
