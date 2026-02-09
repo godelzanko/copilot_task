@@ -1,0 +1,29 @@
+# Build output (excluded from Docker build context to reduce size)
+target/
+
+# Version control
+.git/
+.gitignore
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# Documentation (not needed in Docker image)
+*.md
+README.md
+docs/
+
+# BMAD artifacts (project management files)
+_bmad/
+_bmad-output/
+
+# Docker files (don't include Docker files in Docker build context)
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# OS files
+.DS_Store
+Thumbs.db
