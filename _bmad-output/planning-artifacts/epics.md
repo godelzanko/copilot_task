@@ -1,5 +1,5 @@
 ---
-stepsCompleted: ["step-01-validate-prerequisites"]
+stepsCompleted: ["step-01-validate-prerequisites", "epic-1-core-api-implementation"]
 inputDocuments: 
   - "_bmad-output/planning-artifacts/PRD.md"
   - "_bmad-output/planning-artifacts/architecture.md"
