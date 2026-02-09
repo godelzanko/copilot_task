@@ -295,6 +295,8 @@ copilot_task/
 
 ### Database Schema
 - [DATABASE_SCHEMA_DESIGN.md](DATABASE_SCHEMA_DESIGN.md) - Schema design documentation
+- [LIQUIBASE_MIGRATION_GUIDE.md](LIQUIBASE_MIGRATION_GUIDE.md) - **NEW** Database migration guide
+- [JPA_ENTITY_MAPPING_GUIDE.md](JPA_ENTITY_MAPPING_GUIDE.md) - **NEW** JPA entity implementation guide
 - [architecture.md - Data Architecture](../_bmad-output/planning-artifacts/architecture.md#data-architecture)
 - [db.changelog-master.yaml](../src/main/resources/db/changelog/db.changelog-master.yaml)
 
@@ -347,9 +349,9 @@ copilot_task/
 
 ---
 
-**Last Updated:** 2026-02-06  
-**Documentation Version:** 1.0  
-**Project Status:** Foundation Complete, Ready for Implementation
+**Last Updated:** 2026-02-09  
+**Documentation Version:** 1.1  
+**Project Status:** Epic 3 - Database Integration (Story 3.2 Complete)
 
 ---
 

@@ -1060,15 +1060,15 @@ So that I can safely evolve the schema over time
 **Acceptance Criteria:**
 
 1. **Changelog File Structure**
-   - [ ] Master changelog: `src/main/resources/db/changelog/db.changelog-master.yaml`
-   - [ ] Includes individual changesets:
+   - [x] Master changelog: `src/main/resources/db/changelog/db.changelog-master.yaml`
+   - [x] Includes individual changesets:
      - `001-create-urls-table.yaml`
      - `002-create-normalized-url-index.yaml`
 
 2. **Changeset 001: Create urls Table**
-   - [ ] Changeset ID: `001-create-urls-table`
-   - [ ] Author: `developer`
-   - [ ] Changes:
+   - [x] Changeset ID: `001-create-urls-table`
+   - [x] Author: `developer`
+   - [x] Changes:
      ```yaml
      changes:
        - createTable:
@@ -1092,24 +1092,24 @@ So that I can safely evolve the schema over time
      ```
 
 3. **Changeset 002: Create Normalized Index**
-   - [ ] Changeset ID: `002-create-normalized-url-index`
-   - [ ] Author: `developer`
-   - [ ] Changes:
+   - [x] Changeset ID: `002-create-normalized-url-index`
+   - [x] Author: `developer`
+   - [x] Changes:
      ```yaml
      changes:
        - sql:
            sql: CREATE UNIQUE INDEX idx_original_url_normalized ON urls(LOWER(TRIM(original_url)))
      ```
-   - [ ] Uses raw SQL (Liquibase YAML doesn't support expression indexes)
+   - [x] Uses raw SQL (Liquibase YAML doesn't support expression indexes)
 
 4. **Rollback Configuration**
-   - [ ] Rollback for changeset 001:
+   - [x] Rollback for changeset 001:
      ```yaml
      rollback:
        - dropTable:
            tableName: urls
      ```
-   - [ ] Rollback for changeset 002:
+   - [x] Rollback for changeset 002:
      ```yaml
      rollback:
        - sql:
@@ -1117,7 +1117,7 @@ So that I can safely evolve the schema over time
      ```
 
 5. **Master Changelog**
-   - [ ] Includes both changesets in order:
+   - [x] Includes both changesets in order:
      ```yaml
      databaseChangeLog:
        - include:
@@ -1138,10 +1138,10 @@ So that I can safely evolve the schema over time
 - Integration test: Spring Boot application applies migrations on startup
 
 **Definition of Done:**
-- [ ] Liquibase changelog files created
-- [ ] Migrations tested manually with Liquibase CLI
-- [ ] Rollback commands tested
-- [ ] Changelog committed to version control
+- [x] Liquibase changelog files created
+- [x] Migrations tested manually with Liquibase CLI
+- [x] Rollback commands tested
+- [x] Changelog committed to version control
 
 ---
 
