@@ -48,8 +48,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
         ErrorResponse errorResponse = new ErrorResponse(
-            "Invalid URL format",
-            "URL must be a valid HTTP or HTTPS URL"
+            "Invalid Request",
+            ex.getMessage()
         );
         
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);

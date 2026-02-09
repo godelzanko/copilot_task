@@ -85,8 +85,8 @@ class ShortenControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
             .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.error").value("Invalid URL format"))
-            .andExpect(jsonPath("$.message").value("URL must be a valid HTTP or HTTPS URL"));
+            .andExpect(jsonPath("$.error").value("Invalid Request"))
+            .andExpect(jsonPath("$.message").value("Invalid URL format"));
     }
     
     @Test
@@ -99,7 +99,8 @@ class ShortenControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
             .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.error").value("Invalid URL format"));
+            .andExpect(jsonPath("$.error").value("Invalid Request"))
+            .andExpect(jsonPath("$.message").value("Only HTTP and HTTPS protocols are supported"));
     }
     
     @Test

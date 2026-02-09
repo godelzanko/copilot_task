@@ -34,11 +34,15 @@ public class ShortenController {
      */
     @PostMapping("/shorten")
     public ResponseEntity<ShortenResponse> shortenUrl(@Valid @RequestBody ShortenRequest request) {
-        // Validate URL format
-        validateUrl(request.url());
+        // Trim and validate URL format
+        String trimmedUrl = request.url().trim();
+        validateUrl(trimmedUrl);
+        
+        // Normalize URL (lowercase scheme and host, preserve path case)
+        String normalizedUrl = normalizeUrl(trimmedUrl);
         
         // Delegate to service layer
-        ShortenResponse response = urlShortenerService.shortenUrl(request.url());
+        ShortenResponse response = urlShortenerService.shortenUrl(normalizedUrl);
         
         // Build full short URL using current context path
         String shortUrl = ServletUriComponentsBuilder
@@ -67,8 +71,44 @@ public class ShortenController {
             if (!protocol.equals("http") && !protocol.equals("https")) {
                 throw new IllegalArgumentException("Only HTTP and HTTPS protocols are supported");
             }
+            
+            if (url.getUserInfo() != null) {
+                throw new IllegalArgumentException("URLs with user credentials are not supported");
+            }
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException("Invalid URL format", e);
+        }
+    }
+    
+    /**
+     * Normalizes URL according to RFC 3986.
+     * Lowercases scheme and host (case-insensitive) while preserving path case (case-sensitive).
+     * Strips fragment as it's client-side only per RFC 3986.
+     * 
+     * @param urlString the URL to normalize
+     * @return normalized URL string
+     */
+    private String normalizeUrl(String urlString) {
+        try {
+            URL url = new URL(urlString);
+            String normalizedScheme = url.getProtocol().toLowerCase();
+            String normalizedHost = url.getHost().toLowerCase();
+            int port = url.getPort();
+            String file = url.getFile(); // includes path and query
+            
+            StringBuilder normalized = new StringBuilder();
+            normalized.append(normalizedScheme).append("://").append(normalizedHost);
+            
+            if (port != -1 && port != url.getDefaultPort()) {
+                normalized.append(":").append(port);
+            }
+            
+            normalized.append(file);
+            
+            return normalized.toString();
+        } catch (MalformedURLException e) {
+            // Should not happen as validation is done first
+            return urlString;
         }
     }
 }

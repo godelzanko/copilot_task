@@ -56,8 +56,8 @@ class ShortenControllerIntegrationTest {
         // Then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody().error()).isEqualTo("Invalid URL format");
-        assertThat(response.getBody().message()).isEqualTo("URL must be a valid HTTP or HTTPS URL");
+        assertThat(response.getBody().error()).isEqualTo("Invalid Request");
+        assertThat(response.getBody().message()).isEqualTo("Invalid URL format");
     }
     
     @Test

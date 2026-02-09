@@ -43,3 +43,16 @@ databaseChangeLog:
               COMMENT ON COLUMN urls.short_code IS 'Base62-encoded Snowflake ID, primary key for fast lookups';
               COMMENT ON COLUMN urls.original_url IS 'Original destination URL';
               COMMENT ON COLUMN urls.created_at IS 'Timestamp when the URL mapping was created';
+
+  - changeSet:
+      id: 004-update-url-index-for-app-normalization
+      author: slavaz
+      changes:
+        - sql:
+            sql: |
+              DROP INDEX IF EXISTS idx_original_url_normalized;
+              CREATE UNIQUE INDEX idx_original_url_normalized ON urls(original_url);
+        - rollback:
+            sql: |
+              DROP INDEX IF EXISTS idx_original_url_normalized;
+              CREATE UNIQUE INDEX idx_original_url_normalized ON urls(LOWER(TRIM(original_url)));
