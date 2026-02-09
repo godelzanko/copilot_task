@@ -16,4 +16,13 @@ public interface UrlShortenerService {
      * @return ShortenResponse containing shortCode and shortUrl
      */
     ShortenResponse shortenUrl(String url);
+    
+    /**
+     * Retrieves the original URL for a given short code.
+     * 
+     * @param shortCode the short code to look up
+     * @return the original URL
+     * @throws com.example.urlshortener.exception.ShortCodeNotFoundException if short code doesn't exist
+     */
+    String getOriginalUrl(String shortCode);
 }

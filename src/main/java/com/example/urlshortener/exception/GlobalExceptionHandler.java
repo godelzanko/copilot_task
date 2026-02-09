@@ -56,6 +56,22 @@ public class GlobalExceptionHandler {
     }
     
     /**
+     * Handles short code not found exceptions.
+     * 
+     * @param ex the short code not found exception
+     * @return 404 Not Found with error details
+     */
+    @ExceptionHandler(ShortCodeNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleShortCodeNotFoundException(ShortCodeNotFoundException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+            "Not Found",
+            ex.getMessage()
+        );
+        
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+    
+    /**
      * Handles all other unexpected exceptions.
      * 
      * @param ex the exception

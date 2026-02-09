@@ -1,7 +1,9 @@
+/home/slavaz/projects/godel_course_copilot/copilot_task/src/main/java/com/example/urlshortener/controller/RedirectController.java
 /home/slavaz/projects/godel_course_copilot/copilot_task/src/main/java/com/example/urlshortener/dto/ShortenResponse.java
 /home/slavaz/projects/godel_course_copilot/copilot_task/src/main/java/com/example/urlshortener/UrlShortenerApplication.java
 /home/slavaz/projects/godel_course_copilot/copilot_task/src/main/java/com/example/urlshortener/service/UrlShortenerService.java
 /home/slavaz/projects/godel_course_copilot/copilot_task/src/main/java/com/example/urlshortener/service/UrlShortenerServiceStub.java
+/home/slavaz/projects/godel_course_copilot/copilot_task/src/main/java/com/example/urlshortener/exception/ShortCodeNotFoundException.java
 /home/slavaz/projects/godel_course_copilot/copilot_task/src/main/java/com/example/urlshortener/dto/ErrorResponse.java
 /home/slavaz/projects/godel_course_copilot/copilot_task/src/main/java/com/example/urlshortener/dto/ShortenRequest.java
 /home/slavaz/projects/godel_course_copilot/copilot_task/src/main/java/com/example/urlshortener/exception/GlobalExceptionHandler.java
