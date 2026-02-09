@@ -58,7 +58,7 @@ development_status:
   epic-3: in-progress
   3-1-design-and-create-database-schema: ready-for-dev
   3-2-create-liquibase-migration-changelog: review
-  3-3-implement-jpa-entity-and-repository: backlog
+  3-3-implement-jpa-entity-and-repository: done
   3-4-configure-spring-data-jpa-and-postgresql-connection: backlog
   epic-3-retrospective: optional
   
