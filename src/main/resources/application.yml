@@ -1,6 +1,10 @@
 spring:
   application:
     name: url-shortener
+  
+  aop:
+    proxy-target-class: true
+    expose-proxy: true  # Required for AopContext.currentProxy()
 
   datasource:
     url: jdbc:postgresql://localhost:5432/urlshortener

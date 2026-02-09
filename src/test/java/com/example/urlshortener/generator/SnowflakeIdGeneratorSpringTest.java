@@ -1,5 +1,6 @@
 package com.example.urlshortener.generator;
 
+import com.example.urlshortener.AbstractIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,13 +21,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * - Component functionality in Spring context
  * - Concurrent access from multiple threads
  */
-@SpringBootTest(properties = {
-    "spring.autoconfigure.exclude=" +
-        "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration," +
-        "org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration," +
-        "org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration"
-})
-class SnowflakeIdGeneratorSpringTest {
+@SpringBootTest
+class SnowflakeIdGeneratorSpringTest extends AbstractIntegrationTest {
     
     @Autowired
     private SnowflakeIdGenerator generator;

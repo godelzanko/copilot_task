@@ -1,5 +1,6 @@
 package com.example.urlshortener.controller;
 
+import com.example.urlshortener.AbstractIntegrationTest;
 import com.example.urlshortener.dto.ErrorResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,18 +19,18 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Tests complete redirect flow end-to-end with real service layer (stub implementation).
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class RedirectControllerIntegrationTest {
+class RedirectControllerIntegrationTest extends AbstractIntegrationTest {
     
     @Autowired
     private TestRestTemplate restTemplate;
     
     /**
      * AC #1, #2: Test complete redirect flow end-to-end.
-     * Uses hardcoded short code that stub service recognizes.
+     * Creates a short URL and then redirects using the returned short code.
      */
     @Test
     void testRedirect_ExistingShortCode_Returns301WithLocationHeader() {
-        // Arrange - First, create a shortened URL to populate the stub's internal map
+        // Arrange - First, create a shortened URL
         String originalUrl = "https://example.com/very/long/url/for/testing";
         String requestBody = String.format("{\"url\": \"%s\"}", originalUrl);
         
@@ -38,15 +39,23 @@ class RedirectControllerIntegrationTest {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
         
-        // Create short code via POST /api/shorten (stub returns "STUB123")
-        restTemplate.postForEntity(
+        // Create short code via POST /api/shorten
+        ResponseEntity<String> shortenResponse = restTemplate.postForEntity(
             "/api/shorten",
             request,
             String.class
         );
         
-        // Act - Attempt redirect using the hardcoded stub short code
-        String shortCode = "STUB123";  // Known stub short code
+        // Extract short code from response JSON
+        assertThat(shortenResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        String responseBody = shortenResponse.getBody();
+        assertThat(responseBody).isNotNull();
+        
+        // Parse JSON to extract shortCode (simple string parsing)
+        String shortCode = responseBody.replaceAll(".*\"shortCode\":\"([^\"]+)\".*", "$1");
+        assertThat(shortCode).isNotEmpty();
+        
+        // Act - Attempt redirect using the returned short code
         ResponseEntity<Void> redirectResponse = restTemplate.getForEntity(
             "/{shortCode}",
             Void.class,

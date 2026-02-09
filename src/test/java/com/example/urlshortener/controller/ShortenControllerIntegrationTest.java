@@ -1,5 +1,6 @@
 package com.example.urlshortener.controller;
 
+import com.example.urlshortener.AbstractIntegrationTest;
 import com.example.urlshortener.dto.ShortenRequest;
 import com.example.urlshortener.dto.ShortenResponse;
 import com.example.urlshortener.dto.ErrorResponse;
@@ -17,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Tests complete request-response flow.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ShortenControllerIntegrationTest {
+class ShortenControllerIntegrationTest extends AbstractIntegrationTest {
     
     @Autowired
     private TestRestTemplate restTemplate;
@@ -37,8 +38,9 @@ class ShortenControllerIntegrationTest {
         // Then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody().shortCode()).isEqualTo("STUB123");
-        assertThat(response.getBody().shortUrl()).contains("STUB123");
+        assertThat(response.getBody().shortCode()).isNotNull();
+        assertThat(response.getBody().shortCode()).isNotEmpty();
+        assertThat(response.getBody().shortUrl()).contains(response.getBody().shortCode());
     }
     
     @Test

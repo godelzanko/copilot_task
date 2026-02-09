@@ -1,5 +1,6 @@
 package com.example.urlshortener.exception;
 
+import com.example.urlshortener.AbstractIntegrationTest;
 import com.example.urlshortener.dto.ErrorResponse;
 import com.example.urlshortener.dto.ShortenRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Tests complete error handling flow end-to-end through real HTTP requests.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class GlobalExceptionHandlerIntegrationTest {
+class GlobalExceptionHandlerIntegrationTest extends AbstractIntegrationTest {
 
     @Autowired
     private TestRestTemplate restTemplate;

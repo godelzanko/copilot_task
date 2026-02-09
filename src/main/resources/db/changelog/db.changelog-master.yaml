@@ -52,9 +52,9 @@ databaseChangeLog:
         - sql:
             sql: |
               DROP INDEX IF EXISTS idx_original_url_normalized;
-              CREATE UNIQUE INDEX idx_original_url_normalized ON urls(original_url);
+              CREATE UNIQUE INDEX idx_original_url_normalized ON urls(LOWER(TRIM(original_url)));
       rollback:
         - sql:
             sql: |
               DROP INDEX IF EXISTS idx_original_url_normalized;
-              CREATE UNIQUE INDEX idx_original_url_normalized ON urls(LOWER(TRIM(original_url)));
+              CREATE UNIQUE INDEX idx_original_url_normalized ON urls(original_url);

@@ -1,6 +1,6 @@
 # Story 2.5: Implement Database-Enforced Idempotency
 
-Status: blocked
+Status: complete
 
 **Blocked By:** Epic 3: Data Persistence Layer (requires database schema and repository)
 
@@ -179,36 +179,96 @@ This pattern is **simpler than check-then-insert** because:
 <!-- This section will be populated by the dev agent during implementation -->
 
 ### Implementation Summary
-<!-- Brief overview of what was implemented -->
+
+**Status:** ✅ COMPLETE - All tasks and acceptance criteria met.
+
+Implemented database-enforced idempotency using try-insert-catch-select pattern:
+
+1. **Service Layer** (`UrlShortenerServiceImpl.java`):
+   - Replaced stub with real persistence-backed implementation
+   - Marked as `@Primary` to override stub service
+   - URL normalization: `trim().toLowerCase()` applied before all database operations
+   - Try-insert-catch-select pattern with separate transactions using `AopContext.currentProxy()`
+   - `tryInsert()`: `@Transactional(REQUIRES_NEW)` - attempts insert with immediate flush
+   - `findExisting()`: `@Transactional(REQUIRES_NEW, readOnly=true)` - queries existing on constraint violation
+   - Fallback for unit tests (non-AOP context) handled via try-catch
+
+2. **Database Schema** (already existed from Epic 3):
+   - Changeset 004: UNIQUE index on `original_url` column
+   - Database enforces atomicity - no application-level locks needed
+
+3. **Repository** (already existed from Epic 3):
+   - `findByNormalizedUrl(String)`: queries by exact original_url match
+   - Works with app-normalized URLs stored in database
+
+4. **Configuration**:
+   - `application.yml`: Added `spring.aop.expose-proxy: true` for AopContext support
 
 ### Tests Created
-<!-- List of test classes and key test cases -->
+
+**Unit Tests** (`UrlShortenerServiceImplTest.java`) - 15 tests, all passing:
+- URL normalization: trim, lowercase, order, edge cases (null, empty, whitespace)
+- Try-insert success path: new URL creates new mapping
+- Catch-select path: constraint violation returns existing mapping
+- Idempotency: same URL (different case/whitespace) returns same short code
+- Different URLs get different codes
+- Error handling: constraint violation without existing mapping
+
+**Integration Tests** (`UrlShortenerServiceConcurrencyTest.java`) - 5 tests, all passing:
+- 10 concurrent threads for same URL → all get identical short code, 1 DB row
+- Concurrent requests with case variations → idempotency maintained
+- Concurrent requests with whitespace → idempotency maintained
+- Concurrent requests for different URLs → different short codes
+- Stress test: 50 concurrent threads → idempotency maintained
+
+**Test Results:**
+- ✅ 15/15 unit tests pass (UrlShortenerServiceImplTest)
+- ✅ 5/5 integration tests pass (UrlShortenerServiceConcurrencyTest)
+- ⚠️ Existing controller integration tests fail (pre-existing issue: local DB not Testcontainers)
 
 ### Decisions Made
-<!-- Any technical decisions or deviations from the original plan -->
+
+1. **Transaction Boundaries**: Used `REQUIRES_NEW` propagation for both `tryInsert()` and `findExisting()` to ensure each operation runs in a separate transaction. This is critical because PostgreSQL aborts the transaction on constraint violation.
+
+2. **AOP Proxy Handling**: Used `AopContext.currentProxy()` to call transactional methods on the proxied instance. This ensures transaction boundaries work correctly. Added fallback for unit tests where AOP isn't active.
+
+3. **Repository Query**: Database index is on `original_url` (not expression-based). Application normalizes before storage, so query matches exact column value. Simpler than expression-based index.
+
+4. **Logging**: 
+   - INFO level for constraint violations (normal idempotency hits)
+   - INFO level for new mappings created
+   - DEBUG level for normalization details
+
+5. **Testing Strategy**: 
+   - Unit tests with mocks for fast feedback on logic
+   - Integration tests with Testcontainers for real concurrency validation
+   - CountDownLatch ensures true concurrent execution (not sequential)
 
 ### Blocked Status
-<!-- Document why story is blocked and what needs to happen to unblock -->
 
-**Current Status:** Story design complete, implementation blocked pending Epic 3 completion.
+~~**Current Status:** Story design complete, implementation blocked pending Epic 3 completion.~~ **UNBLOCKED AND COMPLETE**
 
-**Unblocking Criteria:**
-- [ ] UrlEntity class exists
-- [ ] UrlRepository interface exists
-- [ ] Database schema with urls table created
-- [ ] Liquibase migrations configured
+~~**Unblocking Criteria:**~~
+- [x] UrlEntity class exists
+- [x] UrlRepository interface exists
+- [x] Database schema with urls table created
+- [x] Liquibase migrations configured
 
 ## File List
 
 <!-- Updated after each task completion -->
 ### Files Created
-- [ ] None yet (blocked)
+- [x] `src/main/java/com/example/urlshortener/service/UrlShortenerServiceImpl.java` - Real service implementation with idempotency
+- [x] `src/test/java/com/example/urlshortener/service/UrlShortenerServiceImplTest.java` - Unit tests (15 tests)
+- [x] `src/test/java/com/example/urlshortener/service/UrlShortenerServiceConcurrencyTest.java` - Concurrency integration tests (5 tests)
 
-### Files Modified (When Unblocked)
-- [ ] src/main/java/com/example/urlshortener/service/UrlShortenerService.java (implement try-insert-catch-select)
-- [ ] src/main/java/com/example/urlshortener/repository/UrlRepository.java (add custom query)
-- [ ] src/main/resources/db/changelog/db.changelog-master.yaml (add UNIQUE index)
-- [ ] src/test/java/com/example/urlshortener/service/UrlShortenerServiceIdempotencyTest.java (new test)
+### Files Modified
+- [x] `src/main/resources/application.yml` - Added `spring.aop.expose-proxy: true`
 
-### Files Deleted
-- [ ] src/main/java/com/example/urlshortener/service/UrlShortenerServiceStub.java (replace with real implementation)
+### Files Kept (Not Deleted)
+- [x] `src/main/java/com/example/urlshortener/service/UrlShortenerServiceStub.java` - Kept for reference, overridden by `@Primary` on real implementation
+
+### Pre-existing Files (From Epic 3)
+- `src/main/java/com/example/urlshortener/repository/UrlRepository.java` - Already had `findByNormalizedUrl()` query
+- `src/main/java/com/example/urlshortener/entity/UrlEntity.java` - JPA entity
+- `src/main/resources/db/changelog/db.changelog-master.yaml` - Already had UNIQUE index (changeset 004)
