@@ -42,7 +42,7 @@ story_location: /home/slavaz/projects/godel_course_copilot/copilot_task/_bmad-ou
 development_status:
   epic-1: in-progress
   1-0-initialize-spring-boot-project: review
-  1-1-create-url-shortening-endpoint: backlog
+  1-1-create-url-shortening-endpoint: review
   1-2-create-redirect-endpoint: backlog
   1-3-implement-global-exception-handling: backlog
   epic-1-retrospective: optional
