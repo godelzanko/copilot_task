@@ -1,3 +1,4 @@
+com/example/urlshortener/generator/SnowflakeIdGenerator.class
 com/example/urlshortener/exception/ShortCodeNotFoundException.class
 com/example/urlshortener/controller/RedirectController.class
 com/example/urlshortener/dto/ErrorResponse.class

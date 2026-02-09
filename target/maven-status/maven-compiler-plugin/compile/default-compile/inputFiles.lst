@@ -1,4 +1,5 @@
 /home/slavaz/projects/godel_course_copilot/copilot_task/src/main/java/com/example/urlshortener/controller/RedirectController.java
+/home/slavaz/projects/godel_course_copilot/copilot_task/src/main/java/com/example/urlshortener/generator/SnowflakeIdGenerator.java
 /home/slavaz/projects/godel_course_copilot/copilot_task/src/main/java/com/example/urlshortener/dto/ShortenResponse.java
 /home/slavaz/projects/godel_course_copilot/copilot_task/src/main/java/com/example/urlshortener/exception/ClockMovedBackwardsException.java
 /home/slavaz/projects/godel_course_copilot/copilot_task/src/main/java/com/example/urlshortener/UrlShortenerApplication.java

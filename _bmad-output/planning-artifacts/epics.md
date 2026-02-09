@@ -771,36 +771,36 @@ So that short codes are URL-safe, readable, and compact
 **Acceptance Criteria:**
 
 1. **Character Set**
-   - [ ] Constant: `private static final String BASE62_ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"`
-   - [ ] 62 characters total (0-9, a-z, A-Z)
-   - [ ] Case-sensitive encoding
+   - [x] Constant: `private static final String BASE62_ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"`
+   - [x] 62 characters total (0-9, a-z, A-Z)
+   - [x] Case-sensitive encoding
 
 2. **Encoding Algorithm**
-   - [ ] Method signature: `public String encode(long id)`
-   - [ ] Division-remainder algorithm:
+   - [x] Method signature: `public String encode(long id)`
+   - [x] Division-remainder algorithm:
      ```java
      while (id > 0) {
          result = ALPHABET.charAt(id % 62) + result;
          id = id / 62;
      }
      ```
-   - [ ] Handles `id = 0` as special case (returns "0")
+   - [x] Handles `id = 0` as special case (returns "0")
 
 3. **Output Format**
-   - [ ] Typical output length: 7 characters (for realistic IDs)
-   - [ ] No padding (variable length based on ID value)
-   - [ ] No special characters, spaces, or delimiters
+   - [x] Typical output length: 7 characters (for realistic IDs)
+   - [x] No padding (variable length based on ID value)
+   - [x] No special characters, spaces, or delimiters
 
 4. **Decoding (Optional)**
-   - [ ] Method signature: `public long decode(String encoded)`
-   - [ ] Reverse algorithm: `result = result * 62 + ALPHABET.indexOf(char)`
-   - [ ] Used for validation tests (not required by API)
+   - [x] Method signature: `public long decode(String encoded)`
+   - [x] Reverse algorithm: `result = result * 62 + ALPHABET.indexOf(char)`
+   - [x] Used for validation tests (not required by API)
 
 5. **Edge Cases**
-   - [ ] ID = 0 returns "0"
-   - [ ] ID = 61 returns "z"
-   - [ ] ID = 62 returns "10"
-   - [ ] Negative IDs throw `IllegalArgumentException`
+   - [x] ID = 0 returns "0"
+   - [x] ID = 61 returns "z"
+   - [x] ID = 62 returns "10"
+   - [x] Negative IDs throw `IllegalArgumentException`
 
 **Technical Notes:**
 - Base62 produces shorter codes than Base36 (with numbers + lowercase only)
@@ -815,10 +815,11 @@ So that short codes are URL-safe, readable, and compact
 - Unit test: Negative ID throws exception
 
 **Definition of Done:**
-- [ ] Base62 encoding implemented
-- [ ] Decode method implemented for testing
-- [ ] Unit tests validate encoding correctness
-- [ ] JavaDoc includes encoding examples
+- [x] Base62 encoding implemented
+- [x] Decode method implemented for testing
+- [x] Unit tests validate encoding correctness
+- [x] JavaDoc includes encoding examples
+- [x] Overflow bug fixed in decode method
 
 ---
 
