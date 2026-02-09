@@ -1,6 +1,6 @@
 # Story 1.0: Initialize Spring Boot Project
 
-Status: review
+Status: completed
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 

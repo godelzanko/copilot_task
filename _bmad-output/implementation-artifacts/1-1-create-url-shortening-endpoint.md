@@ -1,6 +1,6 @@
 # Story 1.1: Create URL Shortening Endpoint
 
-Status: review
+Status: completed
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 

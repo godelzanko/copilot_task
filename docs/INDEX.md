@@ -11,6 +11,7 @@ Welcome to the URL Shortener Service documentation! This index helps you navigat
 
 ### For Development
 - **[DEVELOPMENT.md](DEVELOPMENT.md)** - Implementation examples and coding guidelines
+- **[DATABASE_SCHEMA_DESIGN.md](DATABASE_SCHEMA_DESIGN.md)** - Database schema design decisions and rationale
 - **[architecture.md](../_bmad-output/planning-artifacts/architecture.md)** - Complete architecture documentation
 
 ### For Planning & Context
@@ -293,6 +294,7 @@ copilot_task/
 - [architecture.md - API Specification](../_bmad-output/planning-artifacts/architecture.md#api-specification)
 
 ### Database Schema
+- [DATABASE_SCHEMA_DESIGN.md](DATABASE_SCHEMA_DESIGN.md) - Schema design documentation
 - [architecture.md - Data Architecture](../_bmad-output/planning-artifacts/architecture.md#data-architecture)
 - [db.changelog-master.yaml](../src/main/resources/db/changelog/db.changelog-master.yaml)
 

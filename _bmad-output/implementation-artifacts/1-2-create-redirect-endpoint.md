@@ -1,6 +1,6 @@
 # Story 1.2: Create Redirect Endpoint
 
-Status: review
+Status: completed
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
