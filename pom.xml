@@ -57,6 +57,12 @@
             <artifactId>liquibase-core</artifactId>
         </dependency>
 
+        <!-- Spring Boot Actuator - Health checks and monitoring -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
         <!-- Lombok - Boilerplate code reduction (optional) -->
         <dependency>
             <groupId>org.projectlombok</groupId>
