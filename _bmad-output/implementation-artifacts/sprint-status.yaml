@@ -66,6 +66,6 @@ development_status:
   4-1-create-multi-stage-dockerfile-for-spring-boot-application: ready-for-dev
   4-2-create-docker-compose-configuration: ready-for-dev
   4-3-configure-service-health-checks-and-readiness-probes: backlog
-  4-4-create-readme-with-deployment-instructions: backlog
+  4-4-create-readme-with-deployment-instructions: done
   4-5-create-environment-specific-configuration-profiles: backlog
   epic-4-retrospective: optional

@@ -31,9 +31,23 @@ This service is fundamentally a **persistent key-value store exposed through a R
 
 ### Prerequisites
 
-- Docker 24.0+ and Docker Compose 3.8+
-- Java 21 (for local development)
-- Maven 3.9+ (for local development)
+- **Docker 24.0+** ([installation guide](https://docs.docker.com/get-docker/))
+- **docker-compose 3.8+** (usually bundled with Docker Desktop)
+- Java 21 (for local development only)
+- Maven 3.9+ (for local development only)
+
+**Verify installation:**
+```bash
+docker --version
+
+# Docker Compose v1 (standalone)
+docker-compose --version
+
+# OR Docker Compose v2 (integrated, recommended)
+docker compose version
+```
+
+> **Note:** This project works with both `docker-compose` (v1) and `docker compose` (v2). Use whichever is available on your system.
 
 ### Run with Docker (Recommended)
 
@@ -52,6 +66,12 @@ That's it! The service will automatically:
 1. Start PostgreSQL database
 2. Run Liquibase migrations
 3. Launch the Spring Boot application
+
+**Stop the service:**
+```bash
+# Stop with Ctrl+C, then clean up containers
+docker-compose down
+```
 
 ### Run Locally (Development)
 
@@ -131,6 +151,108 @@ open http://localhost:3000/aB3xK9
 - Returns HTTP 301 (permanent redirect) if short code exists
 - Returns HTTP 404 (not found) if short code doesn't exist
 - Browsers may cache the redirect
+
+## 🔧 Troubleshooting
+
+### Port 3000 Already in Use
+
+**Problem:** `Error: bind: address already in use`
+
+**Solutions:**
+```bash
+# Option 1: Stop the conflicting service
+# Find what's using port 3000
+lsof -i :3000  # macOS/Linux
+netstat -ano | findstr :3000  # Windows
+
+# Kill the process or stop the conflicting service
+
+# Option 2: Change the port in docker-compose.yml
+# Edit the ports section:
+ports:
+  - "8080:8080"  # Change 3000 to any available port
+
+# Then update APP_BASE_URL
+docker-compose up --build
+```
+
+### Docker Permission Denied
+
+**Problem:** `permission denied while trying to connect to Docker daemon socket`
+
+**Solutions:**
+```bash
+# Linux: Add your user to docker group
+sudo usermod -aG docker $USER
+newgrp docker  # Activate the changes
+
+# Or use sudo (not recommended for regular use)
+sudo docker-compose up --build
+
+# macOS/Windows: Ensure Docker Desktop is running
+```
+
+### Database Migration Errors
+
+**Problem:** Liquibase fails with changelog errors
+
+**Solutions:**
+```bash
+# View Liquibase logs
+docker-compose logs liquibase
+
+# Common fixes:
+
+# 1. Clean slate - remove database and restart
+docker-compose down -v
+docker-compose up --build
+
+# 2. Check database connectivity
+docker exec -it url-shortener-db psql -U urlshortener -d urlshortener
+
+# 3. Verify changelog file syntax
+cat src/main/resources/db/changelog/db.changelog-master.yaml
+```
+
+### Application Won't Start / Health Check Failing
+
+**Problem:** App container keeps restarting
+
+**Solutions:**
+```bash
+# Check application logs
+docker-compose logs -f app
+
+# Check health endpoint manually
+docker exec -it url-shortener-app curl http://localhost:8080/actuator/health
+
+# Common causes:
+# - Database not ready: Wait 30-60 seconds after first start
+# - Migration failed: Check liquibase logs
+# - Port conflict: Ensure internal port 8080 is free inside container
+# - Memory issues: Check Docker resource limits in docker-compose.yml
+```
+
+### Service Stuck / Not Responding
+
+**Problem:** Commands hang or services don't respond
+
+**Solutions:**
+```bash
+# Force restart all services
+docker-compose restart
+
+# Nuclear option - full cleanup
+docker-compose down
+docker system prune -a  # Warning: removes all unused Docker resources
+docker-compose up --build
+
+# Check if containers are actually running
+docker-compose ps
+
+# Check system resources
+docker stats
+```
 
 ## 🏛️ Architecture Overview
 
