@@ -387,6 +387,36 @@ mvn test jacoco:report
 # Coverage report: target/site/jacoco/index.html
 ```
 
+### Continuous Integration
+
+This project uses **GitHub Actions** for automated testing and code coverage reporting.
+
+**Workflow Triggers:**
+- Automatically runs on every push to any branch
+- Executes all 200+ unit and integration tests
+- Generates JaCoCo coverage reports
+
+**What Runs in CI:**
+1. Sets up Java 21 (Temurin distribution)
+2. Caches Maven dependencies for faster builds
+3. Runs `mvn clean test` with Testcontainers support
+4. Generates coverage reports via JaCoCo
+5. Uploads coverage artifacts (available for 30 days)
+
+**View Results:**
+- Check marks (✓/✗) appear on commits in GitHub
+- Full logs and coverage reports in the **Actions** tab
+- Download coverage artifacts from workflow runs
+
+**Local Verification:**
+```bash
+# Ensure tests pass before pushing
+mvn clean test
+
+# Same commands CI runs
+mvn clean test && mvn jacoco:report
+```
+
 ## 🐳 Docker Commands
 
 ### View Service Logs
