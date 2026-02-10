@@ -8,6 +8,7 @@ import com.example.urlshortener.repository.UrlRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.AopContext;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -36,11 +37,14 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
     
     private final UrlRepository urlRepository;
     private final SnowflakeIdGenerator generator;
+    private final String baseUrl;
     
     public UrlShortenerServiceImpl(UrlRepository urlRepository, 
-                                  SnowflakeIdGenerator generator) {
+                                  SnowflakeIdGenerator generator,
+                                  @Value("${app.base-url}") String baseUrl) {
         this.urlRepository = urlRepository;
         this.generator = generator;
+        this.baseUrl = baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
     }
     
     /**
@@ -172,7 +176,7 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
      * @return the DTO
      */
     private ShortenResponse toDto(UrlEntity entity) {
-        String shortUrl = "http://localhost:8080/" + entity.getShortCode();
+        String shortUrl = baseUrl + "/" + entity.getShortCode();
         return new ShortenResponse(entity.getShortCode(), shortUrl);
     }
 }

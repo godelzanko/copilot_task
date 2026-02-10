@@ -48,7 +48,7 @@ app:
   snowflake:
     epoch: 2024-01-01T00:00:00Z
     instance-id: 0
-  base-url: http://localhost:8080
+  base-url: ${SHORT_URL_BASE:http://localhost:8080/}
 
 # Actuator - Health checks and monitoring
 management:

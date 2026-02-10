@@ -41,8 +41,12 @@ class UrlShortenerServiceImplTest {
     @Mock
     private SnowflakeIdGenerator generator;
     
-    @InjectMocks
     private UrlShortenerServiceImpl service;
+    
+    @BeforeEach
+    void setUp() {
+        service = new UrlShortenerServiceImpl(urlRepository, generator, "http://localhost:8080/");
+    }
     
     // ========== URL Normalization Tests ==========
     
