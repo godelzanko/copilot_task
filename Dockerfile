@@ -18,6 +18,10 @@ RUN mvn clean package -DskipTests
 # Purpose: Minimal runtime image with JRE only (no build tools)
 # Alpine Linux base provides security and small footprint (~200MB total)
 FROM eclipse-temurin:21-jre-alpine
+
+# Install curl for health checks
+RUN apk add --no-cache curl
+
 WORKDIR /app
 
 # Copy only the built JAR from build stage
