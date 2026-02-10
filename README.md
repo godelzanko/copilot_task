@@ -1,5 +1,7 @@
 # URL Shortener Service
 
+[![CI - Test & Coverage](https://github.com/godelzanko/copilot_task/actions/workflows/ci.yml/badge.svg)](https://github.com/godelzanko/copilot_task/actions/workflows/ci.yml)
+
 A minimalist, production-ready REST API for URL shortening built with Spring Boot, PostgreSQL, and Docker. This project demonstrates industry-standard patterns including Snowflake ID generation, database-enforced idempotency, and containerized deployment.
 
 ## 🎯 Core Philosophy: "HashMap-via-REST"
